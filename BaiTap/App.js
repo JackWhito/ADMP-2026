@@ -1,25 +1,29 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Toast from "react-native-toast-message";
+import "./global.css"
 
 import SplashScreen from "./screens/SplashScreen.js";
-import HomeScreen from "./screens/HomeScreen.js";
 import SignupScreen from "./screens/SignupScreen.js";
 import LoginScreen from "./screens/LoginScreen.js";
 import VerifyScreen from "./screens/VerifyScreen.js";
 import ForgetPasswordScreen from "./screens/ForgetPasswordScreen.js";
 import ResetPasswordScreen from "./screens/ResetPasswordScreen.js";
 import AdminCheckScreen from "./screens/AdminCheckScreen.js";
+
 import { AuthProvider } from "./context/authContext.js";
+import MainTabs from "./navigation/MainTabs.js";
+import ProfileScreen from "./screens/ProfileScreen.js";
+import { StatusBar } from "expo-status-bar";
+import { View } from "react-native";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <AuthProvider>
+      <View style={{flex:1, backgroundColor:"#36393e"}}>
       <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Home" component={HomeScreen} />
+      <AuthProvider>
+      <Stack.Navigator screenOptions={{ headerShown: false, animation:"fade" }}>
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Signup" component={SignupScreen} />
@@ -27,9 +31,11 @@ export default function App() {
         <Stack.Screen name="ForgetPassword" component={ForgetPasswordScreen} />
         <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
         <Stack.Screen name="AdminCheck" component={AdminCheckScreen} />
+        <Stack.Screen name="MainTabs" component={MainTabs} />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
       </Stack.Navigator>
-      <Toast />
+      </AuthProvider>
     </NavigationContainer>
-    </AuthProvider>
+    </View>
   );
 }

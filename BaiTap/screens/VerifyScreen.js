@@ -18,7 +18,7 @@ export default function Verify({ navigation, route }) {
                 type: 'success',
                 text1: 'OTP verified successfully.'
             });
-            navigation.replace("Home");
+            navigation.replace("MainTabs");
         } catch (error) {
             Toast.show({
                 type: 'error',

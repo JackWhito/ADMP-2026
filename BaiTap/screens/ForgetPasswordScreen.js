@@ -1,4 +1,5 @@
-import { View, Text, StyleSheet, Button, TextInput } from "react-native";
+import { View, Text, TouchableOpacity, TextInput, Pressable } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { axiosInstance } from "../lib/axios";
 import { useState } from "react";
 import { useAuth } from "../context/authContext.js";
@@ -49,6 +50,7 @@ export default function ForgetPassword({ navigation, route }) {
             });
         }
     };
+
     const validateForm = () => {
         if(!email.trim()) return Toast.show({
             type: 'error',
@@ -66,47 +68,28 @@ export default function ForgetPassword({ navigation, route }) {
     }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Forget Password</Text>
-      <TextInput autoCapitalize="none" placeholder="Email" style={styles.textinput} value={email} onChangeText={(text) => setEmail(text)} />
-      <View style={styles.control}>
-        <Button title="Send OTP" onPress={handeSendOTP} />
+    <View className="flex-1 justify-center items-center pl-[20] bg-primary">
+      <Text className="text-[24px] font-semibold text-white mb-3">Forget Password</Text>
+      <TextInput placeholderTextColor="white" autoCapitalize="none" placeholder="Email" className="w-4/5 h-[40] border-gray-500 border-[1px] my-[8] pl-[8]" value={email} onChangeText={(text) => setEmail(text)} />
+      <View className="m-[12] justify-center flex-row items-center w-3/5">
+        <TouchableOpacity className="mt-[12px] w-[148px] h-[48px] rounded-[12px] bg-highlight justify-center items-center mb-[16px] flex-row " onPress={handeSendOTP}>
+            <Ionicons name="mail" size={27} color="white" />
+            <Text className='text-white ml-[4px]'>Send OTP</Text>
+        </TouchableOpacity>
       </View>
-      <Text style={styles.text}>Enter OTP</Text>
-      <TextInput autoCapitalize="none" placeholder="Enter OTP" keyboardType="numeric" style={styles.textinput} value={otp} onChangeText={(text) => setOtp(text)} />
-      <View style={styles.control}>
-        <Button title="Verify" onPress={handleVerify} />
+      <Text className="text-[24px] font-semibold text-white mb-3">Enter OTP</Text>
+      <TextInput placeholderTextColor="white" autoCapitalize="none" placeholder="Enter OTP" keyboardType="numeric" className="w-4/5 h-[40] border-gray-500 border-[1px] my-[8] pl-[8]" value={otp} onChangeText={(text) => setOtp(text)} />
+      <View className="m-[12] justify-center flex-row items-center w-3/5">
+        <TouchableOpacity className="mt-[12px] w-[148px] h-[48px] rounded-[12px] bg-highlight justify-center items-center mb-[16px] flex-row " onPress={handleVerify}>
+            <Ionicons name="checkbox" size={27} color="white" />
+            <Text className='text-white ml-[4px]'>Verify</Text>
+        </TouchableOpacity>
       </View>
+    <Pressable onPress={() => navigation.replace("Signup")}>
+        <Text className="text-highlight">Sign up</Text>
+    </Pressable>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingLeft: 20,
-  },
-  text: {
-    fontSize: 24,
-    fontWeight: "600",
-  },
-  textinput: {
-    width: "80%",
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    marginBottom: 12,
-    paddingLeft: 8,
-    marginTop: 8
-  },
-  control: {
-    margin: 12,
-    alignContent: "space-between",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "60%"
-  }
-});
 

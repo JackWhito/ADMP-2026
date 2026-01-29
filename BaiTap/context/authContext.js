@@ -1,22 +1,37 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { axiosInstance } from "../lib/axios";
+import {
+  initAuthDB,
+  saveAuthUser,
+  getAuthUser,
+  clearAuthUser,
+} from "../db/authDB";
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [authUser, setAuthUser] = useState(null);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
 
   const checkAuth = async () => {
-    try {
+    try{
+      await initAuthDB();
+
+      const token = await SecureStore.getItemAsync('token');
+
+      if (!token) {
+        const offlineUser = await getAuthUser();
+        setAuthUser(offlineUser);
+        return;
+      }
+
       const res = await axiosInstance.get("/auth/check");
-      console.log("checkAuth response:", res.data);
       setAuthUser(res.data);
-      setIsAdmin(res.data.role === "admin");
+      saveAuthUser(res.data);
     } catch (error) {
       console.log("Error in checkAuth:", error.response.data.message);
       setAuthUser(null);
+      clearAuthUser();
     } finally {
       setIsCheckingAuth(false);
     }
@@ -30,10 +45,10 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         authUser,
-        isAdmin,
         isCheckingAuth,
         checkAuth,
         setAuthUser,
+        setIsCheckingAuth
       }}
     >
       {children}

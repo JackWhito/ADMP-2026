@@ -2,49 +2,20 @@ import { View, Text, StyleSheet, Button } from "react-native";
 import { useAuth } from "../context/authContext.js";
 import { useEffect } from "react";
 import Toast from "react-native-toast-message";
-import { axiosInstance } from "../lib/axios";
+import { publicAxiosInstance } from "../lib/axios";
+import * as SecureStore from "expo-secure-store";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+import ChatSidebar from "../components/ChatSideBar.js";
+import ChatArea from "../components/ChatArea.js";
 
 export default function HomeScreen({ navigation }) {
-  const { authUser, checkAuth, setAuthUser } = useAuth();
 
-  useEffect(() => {
-    checkAuth();
-    if (!authUser) {
-      console.log("User is not authenticated, redirecting to Login");
-      navigation.replace("Login");
-    }
-  }, [checkAuth]);
-
-  const handleLogout = async () => {
-    try{
-      await axiosInstance.post("/auth/logout");
-      setAuthUser(null);
-      Toast.show({
-        type: "success",
-        text1: "Logged out successfully.",
-      });
-    navigation.replace("Login");
-    } catch (error) {
-      console.log("Error in logout:", error);
-      Toast.show({
-        type: 'error',
-        text1: 'Logout failed.'
-      });
-    }
-  };
-
+  const {top} = useSafeAreaInsets();
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Đoàn Nguyễn Nam Trung</Text>
-      <Text style={styles.text}>Mã số sinh viên: 21110333</Text>
-      <Text style={styles.text}>Nhóm: 04</Text>
-      <Text style={styles.text}>Đề tài: Xây dựng app Discord</Text>
-      
-      <Text style={styles.text}>Welcome, {authUser?.fullName}! {authUser?.role}</Text>
-      <View style={styles.control}>
-        <Button title="Logout" onPress={handleLogout} />
-        <Button title="Check for admin role" onPress={() => navigation.navigate("AdminCheck")} />
-      </View>
+    <View style={[styles.container,{paddingTop: top}]}>
+      <ChatSidebar />
+      <ChatArea />
     </View>
   );
 }
@@ -52,9 +23,8 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "left",
-    paddingLeft: 20,
+    flexDirection: "row",
+    backgroundColor: "#020617",
   },
   text: {
     fontSize: 24,
