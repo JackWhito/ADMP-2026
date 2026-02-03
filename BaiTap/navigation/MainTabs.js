@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect } from "react";
+import { Image, View } from "react-native";
 import Toast from "react-native-toast-message";
 
 import HomeScreen from "../screens/HomeScreen.js";
@@ -22,6 +23,7 @@ export default function MainTabs({navigation}) {
       navigation.replace("Login");
     }
   }, []);
+  const BASE_URL = "http://192.168.1.10:5000";
   return (
       <Tab.Navigator
         screenOptions={({ route }) => ({
@@ -42,8 +44,16 @@ export default function MainTabs({navigation}) {
         <Tab.Screen name="Notifications" component={NotificationsScreen} options={{title:"Notifications", tabBarIcon:({color, focused, size}) => (
           <Ionicons name={focused ? "notifications" : "notifications-outline"} size={size} color={color} />
         )}} />
-        <Tab.Screen name="Profile" component={ProfileScreen} options={{title:"Profile", tabBarIcon:({color, focused, size}) => (
-          <Ionicons name={focused ? "person" : "person-outline"} size={size} color={color} />
+        <Tab.Screen name="Profile" component={ProfileScreen} options={{title:"Profile", tabBarIcon:({focused, size, color}) => (
+          <View className="items-center justify-center" >
+            {authUser.avatar ? (
+              <>
+              <Image source={{uri: `${BASE_URL}${authUser?.avatar}`}} style={{width:size+2, height:size+2, borderRadius:(size + 2)/2, marginLeft:2}} />
+              </>
+            ) : (
+              <Ionicons name={focused ? "person" : "person-outline"} size={size} color={color} />
+            )}
+          </View>
         )}}/>
       </Tab.Navigator>
   );

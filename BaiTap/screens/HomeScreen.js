@@ -1,16 +1,16 @@
 import { View, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import ChatSidebar from "../components/ChatSideBar.js";
-import ChatArea from "../components/ChatArea.js";
+import HomeSideBar from "../components/HomeSideBar.js";
+import HomeArea from "../components/HomeArea.js";
 
 export default function HomeScreen({ navigation }) {
 
   const {top} = useSafeAreaInsets();
   return (
     <View style={[styles.container,{paddingTop: top}]}>
-      <ChatSidebar />
-      <ChatArea />
+      <HomeSideBar />
+      <HomeArea/>
     </View>
   );
 }

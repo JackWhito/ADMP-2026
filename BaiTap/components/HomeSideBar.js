@@ -7,7 +7,7 @@ const GROUPS = [
   { id: "3", name: "Design" },
 ];
 
-export default function ChatSidebar() {
+export default function HomeSidebar() {
   return (
     <View className="w-[72px] bg-dark items-center">
       <TouchableOpacity className="mt-[12px] w-[48px] h-[48px] rounded-[12px] bg-highlight justify-center items-center mb-[16px]">
